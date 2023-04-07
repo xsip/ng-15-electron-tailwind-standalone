@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {NgIf} from '@angular/common';
+import {hidden} from 'ansi-colors';
 // @ts-ignore
 const  {ipcRenderer} = window.require('electron');
 
@@ -9,19 +11,53 @@ const  {ipcRenderer} = window.require('electron');
   selector: 'app-root',
   template: `
       <div class="w-full   flex md:flex-row flex-col mx-0 md:mx-auto  bg-transparent text-[rgb(128,131,141)] md:max-w-7xl mt-auto h-screen">
-          <div class="flex dragable rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-between w-[100%] md:w-[20%] drop-shadow-xl bg-[rgb(240,240,240)]">
-              <nav class="sticky flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
-                <button class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]" (click)="close()"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                </button>
+          <div [class.hidden]="menuHidden"
+               class="flex dragable rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-between w-[30%] xl:w-[25%] drop-shadow-xl bg-[rgb(240,240,240)]">
+              <nav class=" border-r-2  border-slate-700 sticky flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
+                  <button class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]" (click)="close()">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                           stroke="currentColor" class="w-6 h-6">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                  </button>
+
+                  <button (click)="menuHidden = !menuHidden"
+                          class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                           stroke="currentColor" class="w-6 h-6">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+                      </svg>
+
+                  </button>
               </nav>
           </div>
-          <div class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col md:w-[100%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
+          <div class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col xl:w-[75%] w-[7¥0%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
               <nav class="sticky dragable flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
+                  <div>
+                      <button *ngIf="menuHidden"
+                              class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]"
+                              (click)="close()">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                               stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+
+                      </button>
+                    <button *ngIf="menuHidden"
+                            class="ml-5 non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]"
+                            (click)="menuHidden = !menuHidden">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+
+                    </button>
+                  </div>
                   <ul class="h-full flex gap-6  items-center">
-                      <a class="hover:scale-125 non-dragable transition-all text-sm cursor-pointer">Home</a>
+                      <a class="hover:scale-125 non-dragable transition-all text-sm cursor-pointer">Sample app</a>
                   </ul>
+
                   <div class="flex items-center non-dragable">
                       <input
                               (change)="darkModeChange()"
@@ -45,7 +81,8 @@ const  {ipcRenderer} = window.require('electron');
   `,
   imports: [
     RouterOutlet,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   styles: [
     `.dragable {
@@ -73,8 +110,10 @@ export class AppComponent implements OnInit{
     this.darkMode = JSON.parse(localStorage.getItem('dark') ?? 'false');
     this.darkModeChange();
   }
-
+  menuHidden = false;
   close() {
     ipcRenderer.send('close');
   }
+
+  protected readonly hidden = hidden;
 }
