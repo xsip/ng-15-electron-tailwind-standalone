@@ -4,7 +4,8 @@ import {provideRouter, Route, withDebugTracing} from '@angular/router';
 import {HomeComponent} from './app/home/home.component';
 
 const routes: Route[] = [
-  {path: '', component: HomeComponent}
+  {path: '',pathMatch: 'full', redirectTo: 'home'},
+  {path: 'home', component: HomeComponent}
 ]
 bootstrapApplication(AppComponent, {
   providers: [

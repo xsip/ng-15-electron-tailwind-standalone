@@ -1,19 +1,30 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {hidden} from 'ansi-colors';
 // @ts-ignore
 const  {ipcRenderer} = window.require('electron');
-
+interface AppRoute {
+  routerLink: string;
+  title: string;
+}
 @Component({
   standalone: true,
   selector: 'app-root',
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    NgIf,
+    RouterLink,
+    RouterLinkActive,
+    NgForOf
+  ],
   template: `
       <div class="w-full   flex md:flex-row flex-col mx-0 md:mx-auto  bg-transparent text-[rgb(128,131,141)] md:max-w-7xl mt-auto h-screen">
           <div [class.hidden]="menuHidden"
-               class="flex dragable rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-between w-[30%] xl:w-[25%] drop-shadow-xl bg-[rgb(240,240,240)]">
-              <nav class=" border-r-2  border-slate-700 sticky flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
+               class="flex dragable rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-start w-[30%] xl:w-[25%] drop-shadow-xl bg-[rgb(240,240,240)]">
+              <nav class=" border-r-2  dark:border-slate-700 sticky flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
                   <button class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]" (click)="close()">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" class="w-6 h-6">
@@ -31,6 +42,9 @@ const  {ipcRenderer} = window.require('electron');
 
                   </button>
               </nav>
+            <ul class="">
+              <a *ngFor="let link of links" [routerLink]="link.routerLink" routerLinkActive="dark:!bg-slate-400 !bg-[rgb(220,220,220)]" class="pl-2 h-12 text-xl items-center flex  bg-[rgb(230,230,230)] hover:bg-[rgb(220,220,220)] hover:dark:bg-slate-400 cursor-pointer hover:dark:text-white dark:text-white    non-dragable  dark:bg-slate-500 mt-1 text-[rgb(128,131,141)] drop-shadow-md">{{link.title}}</a>
+            </ul>
           </div>
           <div class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col xl:w-[75%] w-[7¥0%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
               <nav class="sticky dragable flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
@@ -79,11 +93,7 @@ const  {ipcRenderer} = window.require('electron');
           </div>
       </div>
   `,
-  imports: [
-    RouterOutlet,
-    FormsModule,
-    NgIf
-  ],
+
   styles: [
     `.dragable {
       -webkit-user-select: none;
@@ -96,6 +106,10 @@ const  {ipcRenderer} = window.require('electron');
   ]
 })
 export class AppComponent implements OnInit{
+  links: AppRoute[] = [
+    {routerLink: 'home', title: 'Home'},
+    {routerLink: 'scrapped', title: 'Scrapped'},
+  ]
   darkMode = false;
   darkModeChange() {
     localStorage.setItem('dark', JSON.stringify(this.darkMode));
