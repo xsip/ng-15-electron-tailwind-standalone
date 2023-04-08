@@ -18,6 +18,7 @@ export class HomeComponent {
   fg = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
+    password: ['', Validators.required],
   });
   metaData: MetaData<typeof this.fg.value> = {
     firstName: {
@@ -27,6 +28,11 @@ export class HomeComponent {
     lastName: {
       placeholder: 'Lastname',
       label: 'Lastname'
+    },
+    password: {
+      placeholder: 'Password',
+      label: 'Password',
+      type: 'password'
     }
   }
 }
