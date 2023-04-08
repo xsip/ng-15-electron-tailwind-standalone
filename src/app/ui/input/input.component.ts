@@ -22,6 +22,7 @@ import {Subject, takeUntil} from 'rxjs';
                           name="{{title}}"
                           id="{{title}}"
                           [class.!border-red-600]="this._control.errors && !this._control.pristine"
+                          [class.dark:bg-slate-600]="_disabled"
                           class="border-2 bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-slate-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                           [placeholder]="placeholder"
                   />
@@ -48,6 +49,15 @@ export class InputComponent implements AfterViewInit, ControlValueAccessor, OnDe
   @Input() placeholder?:string = '';
   @Input() title = '';
   @Input() type: 'text' | 'password' |'email' = 'text';
+  @Input() set disabled(disabled: boolean) {
+    this._disabled = disabled;
+    if(disabled) {
+      this.control.disable();
+      return;
+    }
+    this.control.enable();
+  }
+  _disabled = false;
   constructor(@Self() @Optional() public _control: NgControl) {
     this._control.valueAccessor = this;
   }
