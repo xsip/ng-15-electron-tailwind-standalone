@@ -44,17 +44,23 @@ export class ExpressService {
     this.server?.close();
   }
   removeProxy(proxyConfig: ProxyConfig) {
+    console.log('HI');
     this.proxies = this.proxies.filter(proxy => proxy.to === proxyConfig.to);
     console.log(app._router.stack)
   }
   addProxy(proxyConfig: ProxyConfig) {
     this.proxies.push(proxyConfig);
-    app.use(proxyConfig.from, createProxyMiddleware({
-      target: proxyConfig.to,
+    app.use('/'+proxyConfig.to, createProxyMiddleware({
+      target: proxyConfig.from,
       changeOrigin: true,
       pathRewrite: {
-        [proxyConfig.from]: '',
+        [`^/`+proxyConfig.to]: '',
       },
+      plugins: [(proxyServer: any, options: any) => {
+        proxyServer.on('proxyReq', (proxyReq: any, req: any, res: any) => {
+          console.log(`[HPM] [${req.method}] ${req.url}`); // outputs: [HPM] GET /users
+        });
+      },]
     }));
 
   }

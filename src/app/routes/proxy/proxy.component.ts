@@ -83,8 +83,8 @@ export class ProxyComponent {
   fg = this.fb.group({
     proxies: this.fb.array([
       this.fb.group({
-        from: ['', Validators.required],
-        to: ['', Validators.required],
+        from: ['https://dummyjson.com/products', Validators.required],
+        to: ['json', Validators.required],
       })
     ])
   });
