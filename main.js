@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog} = require('electron')
 const url = require("url");
 const path = require("path");
 
@@ -12,7 +12,8 @@ function createWindow() {
     height: 720,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   })
 
@@ -37,4 +38,8 @@ app.on('activate', function () {
 
 ipcMain.on('close', () => {
   app.quit()
+})
+
+ipcMain.handle('folder-dialog', () => {
+  return dialog.showOpenDialogSync({properties: ['openDirectory']});
 })
