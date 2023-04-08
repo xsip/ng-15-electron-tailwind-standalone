@@ -43,9 +43,11 @@ interface AppRoute {
 
                   </button>
               </nav>
-            <ul class="">
-              <a *ngFor="let link of links" [routerLink]="link.routerLink" routerLinkActive="dark:!bg-slate-400 !bg-[rgb(220,220,220)]" class="pl-2 h-12 text-xl items-center flex  bg-[rgb(230,230,230)] hover:bg-[rgb(220,220,220)] hover:dark:bg-slate-400 cursor-pointer hover:dark:text-white dark:text-white    non-dragable  dark:bg-slate-500 mt-1 text-[rgb(128,131,141)] drop-shadow-md">{{link.title}}</a>
-            </ul>
+              <ul class="">
+                  <a *ngFor="let link of links" [routerLink]="link.routerLink"
+                     routerLinkActive="dark:!bg-slate-400 !bg-[rgb(220,220,220)]"
+                     class="pl-2 h-12 text-xl items-center flex  bg-[rgb(230,230,230)] hover:bg-[rgb(220,220,220)] hover:dark:bg-slate-400 cursor-pointer hover:dark:text-white dark:text-white    non-dragable  dark:bg-slate-500 mt-1 text-[rgb(128,131,141)] drop-shadow-md">{{link.title}}</a>
+              </ul>
           </div>
           <div class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col xl:w-[75%] w-[7¥0%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
               <nav class="sticky dragable flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
@@ -60,46 +62,44 @@ interface AppRoute {
                           </svg>
 
                       </button>
-                    <button *ngIf="menuHidden"
-                            class="ml-5 non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]"
-                            (click)="menuHidden = !menuHidden">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
+                      <button *ngIf="menuHidden"
+                              class="ml-5 non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]"
+                              (click)="menuHidden = !menuHidden">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                               stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                          </svg>
 
-                    </button>
+                      </button>
                   </div>
                   <ul class="h-full flex gap-6  items-center">
                       <a class="hover:scale-125 non-dragable transition-all text-sm cursor-pointer">Sample app</a>
                   </ul>
 
                   <div class="flex items-center non-dragable">
-                    <div class="w-14 h-8">
-                      <input type="checkbox" id="dark-mode-toggle" [(ngModel)]="darkMode" class="hidden" (change)="darkModeChange()" />
-                      <label for="dark-mode-toggle" class="transition-all delay-0 w-full h-full bg-[rgb(220,220,220)] dark:bg-slate-600 rounded-full p-1 flex justify-between items-center  cursor-pointer">
-                        <span class="inline ml-1 dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                      <div class="w-14 h-8">
+                          <input type="checkbox" id="dark-mode-toggle" [(ngModel)]="darkMode" class="hidden"
+                                 (change)="darkModeChange()"/>
+                          <label for="dark-mode-toggle"
+                                 class="transition-all delay-0 w-full h-full bg-[rgb(220,220,220)] dark:bg-slate-600 rounded-full p-1 flex justify-between items-center  cursor-pointer">
+                        <span class="inline ml-1 dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                   viewBox="0 0 24 24" stroke-width="1.5"
+                                                                   stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
 </svg>
 </span>
-                        <span class="w-6 h-6 rounded-full bg-white dark:bg-gray-800 block float-right dark:float-left"></span>
-                        <span class="hidden ml-1 dark:inline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                              <span class="w-6 h-6 rounded-full bg-white dark:bg-gray-800 block float-right dark:float-left"></span>
+                              <span class="hidden ml-1 dark:inline"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                         viewBox="0 0 24 24" stroke-width="1.5"
+                                                                         stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round"
+        d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
 </svg>
 </span>
-                      </label>
-                    </div>
-                      <!--<input
-                              (change)="darkModeChange()"
-                              [(ngModel)]="darkMode"
-                              class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary"
-                              type="checkbox"
-                              role="switch"
-                              id="flexSwitchCheckDefault"/>
-                      <label
-                              class="inline-block text-sm pl-[0.15rem] hover:cursor-pointer"
-                              for="flexSwitchCheckDefault"
-                      >darkmode</label
-                      >!-->
+                          </label>
+                      </div>
                   </div>
               </nav>
               <div class="px-5 py-5">
