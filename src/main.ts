@@ -1,7 +1,7 @@
 import {bootstrapApplication} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
 import {provideRouter, Route, withDebugTracing} from '@angular/router';
-import {HomeComponent} from './app/home/home.component';
+import {HomeComponent} from './app/routes/home/home.component';
 
 const routes: Route[] = [
   {path: '',pathMatch: 'full', redirectTo: 'home'},

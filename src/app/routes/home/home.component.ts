@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, Validators} from '@angular/forms';
-import {FormComponent, MetaData} from '../ui/form/form.component';
+import {FormComponent, MetaData} from '../../ui/form/form.component';
 
 @Component({
   selector: 'app-home',
