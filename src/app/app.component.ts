@@ -22,9 +22,8 @@ interface AppRoute {
   ],
   template: `
       <div class="w-full   flex md:flex-row flex-col mx-0 md:mx-auto  bg-transparent text-[rgb(128,131,141)] md:max-w-7xl mt-auto h-screen">
-          <div [class.w-[0%]]="menuHidden"
-               [class.w-[30%]]="!menuHidden"
-               class="transition-all delay-0 ease-in-out flex  rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-start w-[30%] xl:w-[25%] drop-shadow-xl bg-[rgb(240,240,240)]">
+          <div [class.hidden]="menuHidden"
+               class=" transition-all delay-0 ease-in-out flex  rounded-tl-md rounded-bl-md flex-col dark:bg-slate-600 justify-start w-[30%] xl:w-[25%] drop-shadow-xl bg-[rgb(240,240,240)]">
               <nav class=" border-r-2  dark:border-slate-700 dragable sticky flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
                   <button class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]" (click)="close()">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -34,7 +33,7 @@ interface AppRoute {
                       </svg>
                   </button>
 
-                  <button (click)="menuHidden = !menuHidden"
+                  <button (click)="toggleMenu()"
                           class="non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                            stroke="currentColor" class="w-6 h-6">
@@ -64,7 +63,7 @@ interface AppRoute {
                       </button>
                       <button *ngIf="menuHidden"
                               class="ml-5 non-dragable dark:text-[rgb(128,131,141)] text-[rgb(128,131,141)]"
-                              (click)="menuHidden = !menuHidden">
+                              (click)="toggleMenu()">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                stroke="currentColor" class="w-6 h-6">
                               <path stroke-linecap="round" stroke-linejoin="round"
@@ -135,8 +134,14 @@ export class AppComponent implements OnInit{
     }
     document.body.classList.remove('dark');
   }
+  toggleMenu() {
+    this.menuHidden = !this.menuHidden;
+    localStorage.setItem('showMenu', JSON.stringify(!this.menuHidden));
+
+  }
   ngOnInit() {
     this.darkMode = JSON.parse(localStorage.getItem('dark') ?? 'false');
+    this.menuHidden = !JSON.parse(localStorage.getItem('showMenu') ?? 'true');
     this.darkModeChange();
   }
   menuHidden = false;
