@@ -13,7 +13,7 @@ const  {ipcRenderer} = window.require('electron');
     <form [formGroup]="fg">
       <div class="grid gap-6 mb-6 md:grid-cols-2">
         <app-input  formControlName="dataFolder" title="Data Folder" placeholder="Data folder path">
-          <div (click)="selectFolder()" class="cursor-pointer transition-all delay-0 hover:scale-110 ml-2 flex justify-center items-center w-12 border-2 bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-slate-500 dark:border-gray-600 dark:text-white">
+          <div (click)="selectFolder()" class="cursor-pointer transition-all delay-0 hover:scale-110 ml-2 flex justify-center items-center w-12 max-w-[50px] border-2 bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-slate-500 dark:border-gray-600 dark:text-white">
             <p>...</p>
           </div>
         </app-input>
@@ -29,15 +29,13 @@ export class SettingsComponent implements OnInit{
     dataFolder: ''
   })
   config: typeof this.fg.value = {};
-  selectFolder() {
+  async selectFolder() {
 
-    ipcRenderer.invoke('folder-dialog')
-      .then((paths: string[]) => {
-        if(paths[0]) {
-          this.fg.patchValue({dataFolder: paths[0]});
-        }
-        this.onFormChange();
-      })
+    const [path] = await ipcRenderer.invoke('folder-dialog')
+    if(path) {
+      this.fg.patchValue({dataFolder: path});
+    }
+    this.onFormChange();
   }
 
   ngOnInit() {
