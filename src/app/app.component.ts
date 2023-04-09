@@ -3,8 +3,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {hidden} from 'ansi-colors';
-// @ts-ignore
-const  {ipcRenderer} = window.require('electron');
+const  {ipcRenderer}: typeof import('electron') = window.require('electron');
 interface AppRoute {
   routerLink: string;
   title: string;
