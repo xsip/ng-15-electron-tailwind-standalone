@@ -64,7 +64,7 @@ const fixSource = (module: Module, hashList: HashList) => {
             const escapedDep = escapeRegExp(dep+'');
             moduleInfo.dependencies.push({id: dep, hash: hashList[dep + '']} );
             // moduleInfo += `// id: ${dep} | hash: ${hashList[dep + '']}\n`;
-            console.log(`replacing ${dep} with ${hashList[dep + '']}`);
+            // console.log(`replacing ${dep} with ${hashList[dep + '']}`);
             source = source.replace(new RegExp('\\( \'', 'g'), '(\'');
             source = source.replace(new RegExp('\\( "', 'g'), '("');
             source = source.replace(new RegExp('\' \\)', 'g'), '\')');
@@ -74,7 +74,7 @@ const fixSource = (module: Module, hashList: HashList) => {
             source = source.replace(new RegExp(`require\\('${escapedDep}'\\)`, 'g'), `require("./${hashList[dep + '']}.")`/*.js*/);
         })
     }
-    return `/*\n${JSON.stringify(moduleInfo, null,2)}\n*/` + '\n\n' + source;
+    return `\nconst meta = ${JSON.stringify(moduleInfo, null,2)};\n` + '\n\n' + source;
 }
 
 const timeout = () => {

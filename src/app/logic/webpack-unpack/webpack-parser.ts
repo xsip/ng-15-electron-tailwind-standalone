@@ -132,7 +132,7 @@ function unpackRuntimePrelude(ast:  Program) {
         return;
     }
     var factories = getFactories(outer.arguments[0]);
-
+    console.log(factories);
     return {
         factories: factories,
         entryId: entryId,

@@ -4,10 +4,14 @@ import {InputComponent} from '../../ui/input/input.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {unpack} from '../../logic/webpack-unpack';
 import {Observable, ReplaySubject} from 'rxjs';
+
+type Program = any;
+const acorn: typeof import('acorn') = window.require('acorn');
+
+const fs: typeof import('fs') = window.require('fs');
 // @ts-ignore
-const  fs: typeof import("fs") = window.require('fs');
-// @ts-ignore
-const  {ipcRenderer} = window.require('electron');
+const {ipcRenderer} = window.require('electron');
+
 interface MetaData {
   isEntryPoint: boolean;
   hash: string;
@@ -17,6 +21,7 @@ interface MetaData {
     hash: string
   }[];
 }
+
 @Component({
   selector: 'app-unpack',
   standalone: true,
@@ -55,16 +60,15 @@ interface MetaData {
       </div>
       <div *ngIf="metaData.length > 0" class="grid break-words gap-6 mb-6 md:grid-cols-2">
         <div *ngFor="let md of metaData">
-          <h1 class="font-bold text-xl">Dependencies for: {{md.moduleId}} ({{md.hash.slice(0,10)}}...)</h1>
-          <p *ngFor="let dep of md.dependencies">{{dep.id}}({{dep.hash.slice(0,10)}}...)</p>
+          <h1 class="font-bold text-xl">Dependencies for: {{md.moduleId}} ({{md.hash.slice(0, 10)}}...)</h1>
+          <p *ngFor="let dep of md.dependencies">{{dep.id}}({{dep.hash.slice(0, 10)}}...)</p>
         </div>
       </div>
     </form>
   `,
-  styles: [
-  ]
+  styles: []
 })
-export class UnpackComponent implements OnInit{
+export class UnpackComponent implements OnInit {
   fb = inject(FormBuilder);
   fg = this.fb.group({
     inputFolder: '',
@@ -72,20 +76,22 @@ export class UnpackComponent implements OnInit{
     selectedFile: ''
   })
   config: typeof this.fg.value = {};
+
   async selectFolder(folder: 'inputFolder' | 'outputFolder') {
 
     const [path] = await ipcRenderer.invoke('folder-dialog')
-    if(path) {
+    if (path) {
       this.fg.patchValue({[folder]: path});
     }
     this.onFormChange();
     this.loadFiles();
   }
+
   ngOnInit() {
-    this.config = JSON.parse((localStorage.getItem('unpack-config')  ?? '{}'));
+    this.config = JSON.parse((localStorage.getItem('unpack-config') ?? '{}'));
     this.fg.patchValue(this.config);
     this.loadFiles();
-    this.status.next( 'Waiting for input');
+    this.status.next('Waiting for input');
   }
 
   onFormChange() {
@@ -96,34 +102,41 @@ export class UnpackComponent implements OnInit{
   inputFiles: string[] = [];
   outputFiles: string[] = [];
   metaData: MetaData[] = [];
+
   loadFiles() {
 
-    if(!this.fg.value.inputFolder)
+    if (!this.fg.value.inputFolder)
       return;
     this.inputFiles = fs.readdirSync(this.fg.value.inputFolder)?.filter(file => {
       return file.includes('.js');
     }) ?? [];
-    if(!this.fg.value.outputFolder)
+    if (!this.fg.value.outputFolder)
       return;
     this.outputFiles = fs.readdirSync(this.fg.value.outputFolder)?.filter(file => {
       return file.includes('.js');
     }) ?? [];
-    this.metaData = this.outputFiles.map(f => this.collectMetaData(f));
+    this.metaData = this.outputFiles?.map(f => this.collectMetaData(f)) ?? [];
   }
+
   collectMetaData(fileName: string): MetaData {
     const file = fs.readFileSync(`${this.fg.value.outputFolder}/${fileName}`, 'utf-8');
-    const metaDataString = file.match(/\*(.|[\r\n])*\*/)?.[0].replace('/*', '').replace('*/', '').replace(/\*/g,'') as string;
+    const ast: Program = acorn.parse(file, {ecmaVersion: 2019});
+    const metaDataString = file.slice(ast.body[0].declarations[0].start, ast.body[0].declarations[0].end).replace('meta = ', '');
     return JSON.parse(metaDataString);
+
   }
+
   fileChange(event: any) {
     this.onFormChange();
   }
+
   status = new ReplaySubject<string>();
+
   unpack() {
-    const {inputFolder, selectedFile,outputFolder} = this.fg.value;
-    if(!inputFolder || !outputFolder || !selectedFile)
+    const {inputFolder, selectedFile, outputFolder} = this.fg.value;
+    if (!inputFolder || !outputFolder || !selectedFile)
       return;
     console.log('UNPACKING');
-    unpack(inputFolder,selectedFile,outputFolder, this.status);
+    unpack(inputFolder, selectedFile, outputFolder, this.status);
   }
 }
