@@ -4,7 +4,7 @@ const Path = require("path");
 const inputFile = process.argv[2];
 const outputFolder = process.argv[3];
 
-const deleteFolderRecursive = function (path: string) {
+export const deleteFolderRecursive = function (path: string) {
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach((file: string, index: number) => {
       const curPath = Path.join(path, file);

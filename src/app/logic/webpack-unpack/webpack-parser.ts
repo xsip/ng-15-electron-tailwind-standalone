@@ -63,7 +63,7 @@ export const parseWebpackFile = (source: string, opts: any) => {
         }
 
         var deps = getDependencies(factory.factory);
-
+        console.log(factory.index);
         modules.push({
             id: factory.index,
             source: moduleSource,
