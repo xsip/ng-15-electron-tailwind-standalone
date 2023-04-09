@@ -122,7 +122,8 @@ interface AppRoute {
 export class AppComponent implements OnInit{
   links: AppRoute[] = [
     {routerLink: 'home', title: 'Home'},
-    {routerLink: 'settngs', title: 'Settings'},
+    {routerLink: 'settings', title: 'Settings'},
+    {routerLink: 'unpack', title: 'Unpack'},
   ]
   darkMode = false;
   darkModeChange() {

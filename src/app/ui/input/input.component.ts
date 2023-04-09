@@ -14,7 +14,7 @@ import {Subject, takeUntil} from 'rxjs';
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >{{ title }}</label
           >
-          <div class="mt-2">
+          <div class="mt-1">
               <div class="flex">
                   <input
                           type="{{type}}"
