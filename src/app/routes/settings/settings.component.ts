@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 
 import {InputComponent} from '../../ui/input/input.component';
-// @ts-ignore
-const  {ipcRenderer} = window.require('electron');
+const  {ipcRenderer} = window.require<typeof  import('electron')>('electron');
 @Component({
   selector: 'app-settings',
   standalone: true,
