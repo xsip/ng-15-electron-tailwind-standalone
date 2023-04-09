@@ -7,7 +7,7 @@ const acorn: typeof import("acorn")  = window.require('acorn');
 const astring: typeof import("astring")  = window.require('astring');
 // @ts-ignore
 const scan: typeof import("scope-analyzer")  = window.require('scope-analyzer');
-// @ts-ignore
+
 const multisplice = window.require('multisplice');
 // @ts-ignore
 // const {Program}: typeof import("@types/estree") = window.require('@types/estree');
