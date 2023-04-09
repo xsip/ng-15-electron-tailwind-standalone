@@ -48,7 +48,7 @@ interface AppRoute {
                      class="pl-2 h-12 text-xl items-center flex  bg-[rgb(230,230,230)] hover:bg-[rgb(220,220,220)] hover:dark:bg-slate-400 cursor-pointer hover:dark:text-white dark:text-white    non-dragable  dark:bg-slate-500 mt-1 text-[rgb(128,131,141)] drop-shadow-md">{{link.title}}</a>
               </ul>
           </div>
-          <div class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col xl:w-[75%] w-[7¥0%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
+          <div [class.!xl:w-[100%]]="menuHidden" [class.!w-[100%]]="menuHidden"  class="overflow-y-scroll dark:bg-slate-700 dark:text-white  pb-12 flex  w-full flex-col xl:w-[75%] w-[70%] relative rounded-tr-md rounded-br-md drop-shadow-md bg-white">
               <nav class="sticky dragable flex flex-row items-center justify-between px-5 top-0 left-0 w-full h-[50px]  pt-2 pb-2 bg-white dark:dark:bg-slate-800 drop-shadow-md">
                   <div class="flex content-center">
                       <button *ngIf="menuHidden"
