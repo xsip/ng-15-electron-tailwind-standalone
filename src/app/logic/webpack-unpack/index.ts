@@ -52,22 +52,29 @@ const collectHashes = (modules: Module[]): HashList => {
 }
 const fixSource = (module: Module, hashList: HashList) => {
     let source = module.source;
-    let moduleInfo = `// moduleId: ${module.id} | hash: ${hashList[module.id]}\n// isEntryPoint: ${module.entry ? 'true' : 'false'}\n// Dependencies:\n`;
+    // let moduleInfo = `// moduleId: ${module.id} | hash: ${hashList[module.id]}\n// isEntryPoint: ${module.entry ? 'true' : 'false'}\n// Dependencies:\n`;
+    let moduleInfo = {
+      moduleId: module.id,
+      hash: hashList[module.id],
+      isEntryPoint:module.entry,
+      dependencies: [] as any[]
+    }
     if (module.deps) {
         Object.values(module.deps).sort((a, b) => parseInt(b + '', 0) - parseInt(a + '', 0)).forEach(dep => {
             const escapedDep = escapeRegExp(dep+'');
-            moduleInfo += `// id: ${dep} | hash: ${hashList[dep + '']}\n`;
+            moduleInfo.dependencies.push({id: dep, hash: hashList[dep + '']} );
+            // moduleInfo += `// id: ${dep} | hash: ${hashList[dep + '']}\n`;
             console.log(`replacing ${dep} with ${hashList[dep + '']}`);
             source = source.replace(new RegExp('\\( \'', 'g'), '(\'');
             source = source.replace(new RegExp('\\( "', 'g'), '("');
             source = source.replace(new RegExp('\' \\)', 'g'), '\')');
             source = source.replace(new RegExp('" \\)', 'g'), '")');
-            source = source.replace(new RegExp(`require\\(${escapedDep}\\)`, 'g'), `require("./${hashList[dep + '']}.js")`);
-            source = source.replace(new RegExp(`require\\("${escapedDep}"\\)`, 'g'), `require("./${hashList[dep + '']}.js")`);
-            source = source.replace(new RegExp(`require\\('${escapedDep}'\\)`, 'g'), `require("./${hashList[dep + '']}.js")`);
+            source = source.replace(new RegExp(`require\\(${escapedDep}\\)`, 'g'), `require("./${hashList[dep + '']}")`/*.js*/);
+            source = source.replace(new RegExp(`require\\("${escapedDep}"\\)`, 'g'), `require("./${hashList[dep + '']}")`/*.js*/);
+            source = source.replace(new RegExp(`require\\('${escapedDep}'\\)`, 'g'), `require("./${hashList[dep + '']}.")`/*.js*/);
         })
     }
-    return moduleInfo + '\n\n' + source;
+    return `/*\n${JSON.stringify(moduleInfo, null,2)}\n*/` + '\n\n' + source;
 }
 
 const timeout = () => {
